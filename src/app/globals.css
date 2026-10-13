@@ -1,0 +1,428 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'VT323', monospace; /* Primary monospace font */
+  background-color: #0d0d0d; /* Dark terminal background */
+  color: #00ff00; /* Vibrant green text */
+  letter-spacing: 0.05em; /* Slight letter spacing for terminal feel */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'VT323', monospace;
+  color: #00ff00; /* Green for headings */
+}
+
+a {
+  color: #7fff00; /* Lime green for links */
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: #aaff00;
+  text-decoration: underline;
+}
+
+/* Terminal Header Bar */
+.terminal-header {
+  background-color: #1a1a1a;
+  color: #aaaaaa;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #333333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* Blinking Cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.blinking-cursor {
+  animation: blink 0.75s step-end infinite;
+}
+
+/* CRT Scanlines Effect */
+.crt-scanlines {
+  position: relative;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  ),
+  linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.06),
+    rgba(0, 255, 0, 0.02),
+    rgba(0, 0, 255, 0.06)
+  );
+  background-size: 100% 2px, 3px 3px;
+  animation: scanlines 1.5s steps(30, end) infinite;
+}
+
+@keyframes scanlines {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+/* CRT Flicker Effect */
+.terminal-background {
+  animation: flicker 15s infinite alternate cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes flicker {
+  0%, 100% {
+    filter: brightness(1);
+    opacity: 1;
+  }
+  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
+    filter: brightness(0.95);
+    opacity: 0.98;
+  }
+  10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90% {
+    filter: brightness(1.05);
+    opacity: 0.99;
+  }
+}
+
+/* Custom Tailwind CSS theme adjustments */
+@layer base {
+  :root {
+    --background: 0 0% 3.9%; /* #0d0d0d */
+    --foreground: 0 100% 50%; /* #00ff00 */
+    --primary: 0 100% 50%; /* #00ff00 */
+    --primary-foreground: 0 0% 3.9%; /* #0d0d0d */
+    --secondary: 0 0% 14.9%; /* Darker gray for accents */
+    --secondary-foreground: 0 100% 50%; /* Green */
+    --muted: 0 0% 14.9%; /* Darker gray */
+    --muted-foreground: 0 0% 63.9%; /* Lighter gray */
+    --accent: 0 100% 60%; /* Lime green */
+    --accent-foreground: 0 0% 3.9%; /* Dark text on lime */
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 0 0% 98%; /* White */
+    --border: 0 0% 20.9%; /* Dark border */
+    --input: 0 0% 14.9%; /* Dark input background */
+    --ring: 0 100% 50%; /* Green ring */
+    --radius: 0.375rem; /* Slightly rounded corners */
+  }
+
+  /* Dark theme is default */
+  .dark {
+    /* No specific dark overrides needed as the base theme is already dark */
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Animations for specific components */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px) rotate(-5deg); }
+  75% { transform: translateX(5px) rotate(5deg); }
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typing-effect {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  white-space: nowrap; /* Keeps the content on a single line */
+  animation:
+    typing 1s steps(30, end) forwards, /* Adjust steps based on expected text length */
+    blink-caret 0.75s step-end infinite;
+}
+
+.typing-effect span {
+  display: inline-block; /* Needed for animation */
+}
+
+.typing-effect-word {
+  animation: typing 0.5s steps(var(--word-length, 1)) forwards; /* Dynamically adjust steps */
+}
+
+/* Placeholder for potential future UI elements */
+.sidebar-background {
+  background-color: hsl(var(--sidebar-background));
+}
+
+.text-sidebar-foreground {
+  color: hsl(var(--sidebar-foreground));
+}
+
+/* Shadcn UI Overrides for Terminal Feel */
+.card-title, .alert-title {
+  font-family: 'VT323', monospace !important;
+  letter-spacing: 0.05em;
+}
+
+.text-lg, .text-sm, .text-base {
+  font-family: 'VT323', monospace !important;
+}
+
+/* Ensure buttons have a terminal-like appearance */
+.button {
+  font-family: 'VT323', monospace !important;
+  letter-spacing: 0.05em;
+  border-radius: 0px !important; /* Sharp edges for terminal buttons */
+  text-transform: uppercase;
+  transition: all 0.15s ease-in-out;
+}
+
+.button:hover {
+  filter: brightness(1.1);
+}
+
+.button.variant-outline {
+  border-width: 1px;
+  border-style: solid;
+  background-color: transparent;
+}
+
+.button.variant-default {
+  background-color: #00ff00; /* Green */
+  color: #0d0d0d; /* Dark text */
+}
+
+.button.variant-destructive {
+  background-color: #ff0000; /* Red */
+  color: #ffffff; /* White text */
+}
+
+.button.variant-secondary {
+  background-color: #444444; /* Dark Gray */
+  color: #00ff00;
+}
+
+/* Specific styles for input fields */
+input[type="text"], textarea {
+  font-family: 'VT323', monospace !important;
+  background-color: #1a1a1a; /* Dark input background */
+  border: 1px solid #00ff0040; /* Semi-transparent green border */
+  color: #00ff00; /* Green input text */
+  caret-color: #00ff00; /* Green cursor */
+  border-radius: 0px !important; /* Sharp edges */
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  ring-offset-color: #7fff00; /* Lime focus ring */
+  ring-color: #7fff00;
+  border-color: #7fff00; /* Lime focus border */
+}
+
+/* Styles for preformatted text (ASCII art) */
+pre {
+  font-family: 'VT323', monospace !important;
+  line-height: 1.2; /* Tighter line height for ASCII */
+  color: #00ff00; /* Green ASCII art */
+  background-color: #1a1a1a; /* Dark background for the pre block */
+  border: 1px solid #00ff0040; /* Semi-transparent green border */
+  padding: 1rem;
+  border-radius: 0px !important; /* Sharp edges */
+}
+
+/* Alphabet buttons */
+.grid.grid-cols-4 > button,
+.grid.grid-cols-5 > button,
+.grid.grid-cols-7 > button {
+  border-radius: 0px !important;
+  border: 1px solid #00ff0020; /* Subtle border */
+  padding: 0.5rem 0.75rem; /* Adjust padding for buttons */
+  font-size: 0.9rem; /* Adjust font size */
+}
+
+.grid.grid-cols-4 > button:hover,
+.grid.grid-cols-5 > button:hover,
+.grid.grid-cols-7 > button:hover {
+  background-color: #7fff00 !important; /* Lime hover */
+  color: #0d0d0d !important; /* Dark text on hover */
+  border-color: #7fff00;
+  transform: scale(1.05); /* Slight scale on hover */
+}
+
+.grid.grid-cols-4 > button:disabled,
+.grid.grid-cols-5 > button:disabled,
+.grid.grid-cols-7 > button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #1a1a1a; /* Darker disabled background */
+  color: #333333; /* Dim text */
+  border-color: #222222;
+  transform: none;
+}
+
+.grid.grid-cols-4 > button:disabled:hover,
+.grid.grid-cols-5 > button:disabled:hover,
+.grid.grid-cols-7 > button:disabled:hover {
+  filter: none;
+}
+
+/* Toastify overrides */
+.Toastify__toast {
+  font-family: 'VT323', monospace !important;
+  font-size: 0.9rem !important;
+  border-radius: 0px !important;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3) !important;
+}
+
+.Toastify__toast--success {
+  border-left: 5px solid #7fff00 !important;
+  background-color: #0d0d0d !important;
+  color: #00ff00 !important;
+}
+
+.Toastify__toast--error {
+  border-left: 5px solid #ff0000 !important;
+  background-color: #0d0d0d !important;
+  color: #ff0000 !important;
+}
+
+.Toastify__toast-body {
+  padding: 1rem !important;
+}
+
+.Toastify__close-button {
+  color: #aaaaaa !important;
+}
+
+.Toastify__close-button:hover {
+  color: #ffffff !important;
+}
+
+/* Shadcn overrides */
+.shadcn-ui-card {
+  background-color: #111111 !important; /* Slightly lighter dark for cards */
+  border: 1px solid #00ff0020 !important; /* Subtle green border */
+  border-radius: 0px !important; /* Sharp corners */
+}
+
+.shadcn-ui-card-header {
+  border-bottom: 1px solid #00ff0020 !important;
+}
+
+.shadcn-ui-card-title {
+  font-size: 1.1rem !important;
+}
+
+.shadcn-ui-alert {
+  background-color: #1a1a1a !important;
+  border-radius: 0px !important;
+}
+
+.shadcn-ui-alert[data-variant="destructive"] {
+  border-color: #ff0000 !important;
+}
+
+.shadcn-ui-input {
+  border-radius: 0px !important;
+}
+
+.shadcn-ui-button {
+  border-radius: 0px !important;
+}
+
+/* Utility classes for terminal feel */
+.text-green-500 { color: #00ff00; }
+.text-lime-400 { color: #7fff00; }
+.text-red-500 { color: #ff0000; }
+.bg-black\/90 { background-color: #0d0d0d; }
+.bg-black\/60 { background-color: #1a1a1a; }
+.bg-black\/50 { background-color: #262626; }
+.bg-black\/40 { background-color: #333333; }
+.hover\:bg-lime-600:hover { background-color: #66cc00; }
+.hover\:bg-red-700:hover { background-color: #cc0000; }
+.hover\:border-lime-400:hover { border-color: #7fff00; }
+.hover\:text-green-200:hover { color: #aaff00; }
+.hover\:border-green-400\/50:hover { border-color: #7fff0050; }
+.hover\:bg-black\/40:hover { background-color: #333333; }
+.shadow-md { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); }
+.shadow-lg { box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+.focus\:ring-lime-400:focus-visible { --tw-ring-color: #7fff00; --tw-ring-offset-color: #0d0d0d; }
+.focus\:border-lime-400:focus { border-color: #7fff00; }
+.placeholder\:text-gray-600::placeholder { color: #555555; }
+.border-green-500\/30 { border-color: #00ff004d; }
+.border-green-500\/50 { border-color: #00ff0080; }
+.border-green-500\/20 { border-color: #00ff0033; }
+.text-gray-400 { color: #aaaaaa; }
+.text-gray-300 { color: #cccccc; }
+.text-gray-500 { color: #777777; }
+.italic { font-style: italic; }
+.shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 255, 0, 0.25); }
+.backdrop-blur-sm { backdrop-filter: blur(4px); }
+.hover\:scale-110:hover { transform: scale(1.1); }
+.hover\:shadow-lg:hover { box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+.cursor-not-allowed { cursor: not-allowed; }
+.aspect-square { aspect-ratio: 1 / 1; }
+.whitespace-pre-wrap { white-space: pre-wrap; }
+.overflow-hidden { overflow: hidden; }
+
+/* Ensure Shadcn components respect the terminal font */
+.ToastViewport { font-family: 'VT323', monospace !important; }
+.CardTitle { font-family: 'VT323', monospace !important; }
+.AlertTitle { font-family: 'VT323', monospace !important; }
+.AlertDescription { font-family: 'VT323', monospace !important; }
+.Input { font-family: 'VT323', monospace !important; }
+.Button { font-family: 'VT323', monospace !important; }
+.Separator { background-color: #00ff004d; }
+.ProgressIndicator { background-color: #00ff00; }
+.TooltipContent { font-family: 'VT323', monospace !important; }
+
+/* Make sure to match the custom colors defined in tailwind.config.ts */
+/* Example: button color mapping */
+.bg-primary { background-color: #00ff00; } /* Green */
+.text-primary-foreground { color: #0d0d0d; } /* Dark text */
+.bg-destructive { background-color: #ff0000; } /* Red */
+.text-destructive-foreground { color: #ffffff; } /* White text */
+.bg-accent { background-color: #7fff00; } /* Lime */
+.text-accent-foreground { color: #0d0d0d; } /* Dark text */
+.border-input { border-color: #00ff0040; } /* Semi-transparent green */
+.ring-ring { --tw-ring-color: #00ff00; } /* Green ring */
+
+/* Adjustments for specific elements */
+.card {
+  background-color: #111111 !important;
+  border: 1px solid #00ff0020 !important;
+  border-radius: 0px !important;
+}
+
+.card-header {
+  border-bottom: 1px solid #00ff0020 !important;
+}
+
+.card-title {
+  font-size: 1.1rem !important;
+}
+
+.alert {
+  background-color: #1a1a1a !important;
+  border-radius: 0px !important;
+}
+
+.alert[data-variant="destructive"] {
+  border-color: #ff0000 !important;
+}
+
+.input {
+  border-radius: 0px !important;
+}
+
+.button {
+  border-radius: 0px !important;
+}
